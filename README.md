@@ -45,15 +45,8 @@ To run this game locally on your machine, follow these steps:
    ```
 
 
-### Explanation:
-1. **Overview**: Describes the functionality of the game.
-2. **Features**: Lists key features like the random number generation and the user feedback system.
-3. **How to Play**: Brief instructions on how to play the game.
-4. **Installation**: Step-by-step guide to running the game locally.
-5. **Technologies Used**: Details the technologies behind the game.
-6. **License**: Mention of an open-source license (MIT), which you can modify as needed.
+## Technologies Used
 
-Simply replace `your-username` with your actual GitHub username. This README should provide a comprehensive explanation for others who want to understand and use your project.
-
-
-   
+- **PHP**: For backend logic, random number generation, and handling user input.
+- **Bootstrap**: To create a responsive and visually appealing user interface.
+- **HTML & CSS**: For page structure and styling.
