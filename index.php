@@ -1,27 +1,41 @@
 <?php
 session_start();
 
-// Initialize random number on first load
+// Initialize random number and attempts on first load
 if (!isset($_SESSION['random_number'])) {
+    resetGame();
+}
+
+// Reset the game function
+function resetGame()
+{
     $_SESSION['random_number'] = rand(1, 100); // Random number between 1 and 100
-    $_SESSION['attempts'] = 0; // Count of attempts
+    $_SESSION['attempts'] = 0; // Reset attempts count
 }
 
 // Process user guess
 $message = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $guess = intval($_POST['guess']);
-    $_SESSION['attempts']++;
-
-    if ($guess > $_SESSION['random_number']) {
-        $message = "Your guess is too high!";
-    } elseif ($guess < $_SESSION['random_number']) {
-        $message = "Your guess is too low!";
+    if (isset($_POST['reset'])) {
+        // Reset the game when the reset button is clicked
+        resetGame();
+        $message = "Game reset! Try guessing the new number.";
     } else {
-        $message = "Congratulations! You guessed the correct number in " . $_SESSION['attempts'] . " attempts.";
-        // Reset the game
-        unset($_SESSION['random_number']);
-        unset($_SESSION['attempts']);
+        $guess = intval($_POST['guess']);
+        $_SESSION['attempts']++;
+
+        // Validate the input
+        if ($guess < 1 || $guess > 100) {
+            $message = "Please enter a number between 1 and 100.";
+        } elseif ($guess > $_SESSION['random_number']) {
+            $message = "Your guess is too high!";
+        } elseif ($guess < $_SESSION['random_number']) {
+            $message = "Your guess is too low!";
+        } else {
+            $message = "🎉 Congratulations! You guessed the correct number " .
+                $_SESSION['random_number'] . " in " . $_SESSION['attempts'] . " attempts.";
+            resetGame();
+        }
     }
 }
 ?>
@@ -58,6 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="number" name="guess" class="form-control" placeholder="Enter your number" min="1" max="100" required>
                             </div>
                             <button type="submit" class="btn btn-success w-100">Submit Guess</button>
+                        </form>
+                        <form method="post" class="text-center mt-3">
+                            <button type="submit" name="reset" class="btn btn-danger w-100">Reset Game</button>
                         </form>
                     </div>
                     <!-- Footer showing attempt count -->
